@@ -1,25 +1,15 @@
 import streamlit as st
-from gtts import gTTS
-from io import BytesIO
-from IPython.display import Audio
+from bokeh.models.widgets import Button
+from bokeh.models import CustomJS
 
-# Función para convertir texto en audio
-def text_to_speech(text):
-    tts = gTTS(text)
-    fp = BytesIO()
-    tts.save(fp)
-    return fp
+text = st.text_input("Que Hablar")
 
-# Interfaz de usuario
-st.title("Convertir texto en audio")
+tts_button = Button(label="Decirlo", width=100)
 
-# Ingresar el texto
-text = st.text_area("Ingrese el texto que desea convertir en audio")
+tts_button.js_on_event("button_click", CustomJS(code=f"""
+    var u = new SpeechSynthesisUtterance();
+    u.text = "{text}";
+    u.lang = 'en-US';
 
-# Botón para convertir el texto en audio
-if st.button("Convertir"):
-    if text:
-        audio = text_to_speech(text)
-        st.audio(audio)
-    else:
-        st.warning("Por favor ingrese un texto")
+    speechSynthesis.speak(u);
+    """))
