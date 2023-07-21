@@ -13,6 +13,7 @@ tts_button.js_on_event("button_click", CustomJS(code=f"""
 
     speechSynthesis.speak(u);
     """))
-st.bokeh_chart(tts_button)
+    
+st.bokeh_chart(tts_button,use_container_width=True)
 
     
